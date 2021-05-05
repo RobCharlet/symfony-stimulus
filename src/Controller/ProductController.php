@@ -26,6 +26,13 @@ class ProductController extends AbstractController
             $searchTerm
         );
 
+        // Test if AJAX request
+        if ($request->query->get('preview')) {
+            return $this->render('product/_searchPreview.html.twig', [
+                'products' => $products,
+            ]);
+        }
+
         return $this->render('product/index.html.twig', [
             'currentCategory' => $category,
             'categories' => $categoryRepository->findAll(),
