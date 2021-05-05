@@ -2,16 +2,42 @@
     attr: { class: 'cart-add-controls d-flex align-items-center justify-content-baseline' }
 }) }}
     {% if addToCartForm.color is defined %}
-        {{ form_widget(addToCartForm.color) }}
+        <div
+                {# data-controller="color-square"
+                #}{# value api #}{#
+        data-color-square-color-id-value="{{ addToCartForm.vars.data.product.colors[1].id }}" #}
+                {{ stimulus_controller('color-square', {
+                    colorId:addToCartForm.vars.data.product.colors[1].id
+                }) }}
+        >
+            {{ form_widget(addToCartForm.color, {
+                attr: {'data-color-square-target': 'select'}
+            }) }}
+
+            {% for color in addToCartForm.vars.data.product.colors %}
+                <button
+                        aria-label="Choose the color {{ color.name }}"
+                        class="color-square"
+                        type="button"
+                        {# on doit ajouter click-> si ce c'est pas un element par defaut
+                        comme a, button etc... #}
+                        data-action="color-square#selectColor"
+                        data-color-square-target="colorSquare"
+                        {# Propriété custom qui n'a rien à voir avec stimulus #}
+                        data-color-id="{{ color.id }}"
+                        style="background-color: rgb({{ color.red }},{{ color.green }},{{ color.blue }})"
+                ></button>
+            {% endfor %}
+        </div>
     {% endif %}
 
     {{ form_widget(addToCartForm.quantity, {
         attr: { class: 'mx-3' }
     }) }}
 
-    <button class="btn btn-info btn-sm" formnovalidate>
-        +
-    </button>
+<button class="btn btn-info btn-sm" formnovalidate>
+    +
+</button>
 {{ form_end(addToCartForm) }}
 
 <div>
