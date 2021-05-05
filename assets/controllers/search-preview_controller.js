@@ -1,4 +1,6 @@
-import {Controller} from 'stimulus';
+import {Controller}      from 'stimulus';
+import {useClickOutside} from 'stimulus-use';
+import {useDebounce}     from 'stimulus-use';
 
 export default class extends Controller {
     static values = {
@@ -7,13 +9,31 @@ export default class extends Controller {
 
     static targets = ['result'];
 
-    async onSearchInput(event) {
+    static debounces = ['search']
+
+    connect() {
+        useClickOutside(this);
+        useDebounce(this);
+    }
+
+    onSearchInput(event) {
+        this.search(event.currentTarget.value)
+    }
+
+    // debounce only work with functions we call herself
+    // browser call onSearchInput() and prevent debounce
+    // from working simultaneously
+    async search(query) {
         const params = new URLSearchParams({
-            q      : event.currentTarget.value,
+            q      : query,
             preview: 1
         });
-        console.log(params.toString());
-        const response = await fetch(`${this.urlValue}?${params.toString()}`);
+        const response              = await fetch(`${this.urlValue}?${params.toString()}`);
         this.resultTarget.innerHTML = await response.text();
+    }
+
+    clickOutside(event) {
+        // example to close a modal
+        this.resultTarget.innerHTML = '';
     }
 }
