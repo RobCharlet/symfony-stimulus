@@ -4,12 +4,13 @@
         "@symfony/stimulus-bridge": "^2.0.0",
         "@symfony/ux-chartjs": "file:vendor/symfony/ux-chartjs/Resources/assets",
         "@symfony/webpack-encore": "^1.0.0",
-        "bootstrap": "^4.6.0",
+        "bootstrap": "5",
         "core-js": "^3.0.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "regenerator-runtime": "^0.13.2",
         "stimulus": "^2.0.0",
+        "stimulus-use": "^0.23.0",
         "sweetalert2": "^10.16.7",
         "webpack-bundle-analyzer": "^4.4.1",
         "webpack-notifier": "^1.6.0"
@@ -22,7 +23,5 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress"
     },
-    "dependencies": {
-        "stimulus-use": "^0.23.0"
-    }
+    "dependencies": {}
 }
