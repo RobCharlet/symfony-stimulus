@@ -39,13 +39,25 @@ class ProductAdminController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            // Redirection for product modal form submission
+            if ($request->isXmlHttpRequest()) {
+                return new Response(null,204);
+            }
+
             return $this->redirectToRoute('product_admin_index');
         }
 
-        return $this->render('product_admin/new.html.twig', [
+        // Test if it's an AJAX request (parameter passed in jquery ajax call)
+        /*$template = $request->query->get('ajax') === "1" ? '_form.html.twig' : 'new.html.twig';*/
+        $template = $request->isXmlHttpRequest() ? '_form.html.twig' : 'new.html.twig';
+
+        return $this->render('product_admin/' . $template, [
             'product' => $product,
             'form' => $form->createView(),
-        ]);
+        ], new Response(
+            null,
+            $form->isSubmitted() ? 422: 200,
+        ));
     }
 
     /**
